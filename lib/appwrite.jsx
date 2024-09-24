@@ -1,4 +1,4 @@
-import { Account, Client, ID } from 'react-native-appwrite';
+import { Account, Avatars, Client, Databases, ID , } from 'react-native-appwrite';
 
 
 export const appwriteConfig = {
@@ -23,14 +23,65 @@ client
 
 // Register User
 const account = new Account(client);
+const avatars = new Avatars(client);
+const databases = new Databases(client);
 
-export const createUser =() => {
-  account.create(ID.unique(), 'me@example.com', 'password', 'Jane Doe')
-  .then(function (response) {
-      console.log(response);
-  }, function (error) {
+export const createUser = async (email, password, username) => {
+  try {
+    const newAccount = await account.create(
+       ID.unique(),
+        email,
+        password,
+        username
+    )
+    if(!newAccount) throw Errors;
+    const avatarUrl = avatars.getInitials(username)
+
+    await SignIn(email, password)
+    const newUser = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      ID.unique(),
+      {
+        accountid: newAccount.$id,
+        email,
+        username,
+        avatar: avatarUrl
+      }
+
+    )
+    return newUser;
+  } catch(error) {
       console.log(error);
-  });
+      throw new Error(error)
+  }
 }
 
 
+export const  SignIn = async (email, password) => {
+  try{
+    const session = await account.createEmailPasswordSession(email, password)
+    return session;
+  } catch(error) {
+    throw new Error(error)
+  }
+}
+
+export const getCurrentUser = async() => {
+  try {
+     const currentAccount = await account.get();
+
+     if(!currentAccount) throw Error;
+
+     const currentUser = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      [Query.equal('accountid', currentAccount.$id)]
+     )
+
+     if(!currentUser) throw Error;
+     return currentUser.documents[0]
+  } catch(error) {
+    console.log(error)
+  }
+}

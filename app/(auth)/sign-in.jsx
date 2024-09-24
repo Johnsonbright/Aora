@@ -7,7 +7,7 @@ import {images} from '../../constants'
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 
-const SignIn = () => {
+const Signin = () => {
 
   const [form, setForm] = useState({
      email: '',
@@ -63,4 +63,4 @@ const [isSubmitting, setIsSubmitting] = useState(false)
   )
 }
 
-export default SignIn
+export default Signin
