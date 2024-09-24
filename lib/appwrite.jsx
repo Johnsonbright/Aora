@@ -1,4 +1,4 @@
-import { Account, Avatars, Client, Databases, ID , } from 'react-native-appwrite';
+import { Account, Avatars, Client, Databases, ID , Query} from 'react-native-appwrite';
 
 
 export const appwriteConfig = {

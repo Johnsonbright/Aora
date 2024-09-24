@@ -7,8 +7,12 @@ import { StatusBar} from 'expo-status-bar'
 
 import {images} from '../constants'
 import CustomButton from '../components/CustomButton'
+import { useGlobalContext} from '../context/GlobalProvider'
 
-const _layout = () => {
+const App = () => {
+  const {isLoading, isLoggedIn} = useGlobalContext();
+
+  if(!isLoading && isLoggedIn) return <Redirect href="/home"/>
   return (
     <SafeAreaView className="bg-primary h-full">
     <ScrollView contentContainerStyle={{height:'100%'}} >
@@ -49,5 +53,5 @@ const _layout = () => {
   )
 }
 
-export default _layout
+export default App
 
