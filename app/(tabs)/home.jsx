@@ -6,13 +6,36 @@ import SearchInput from '../../components/SearchInput'
 import React, { useState } from 'react'
 import Trending from '../../components/Trending'
 import EmptyState from '../../components/EmptyState'
+import {getAllPosts} from "../../lib/appwrite"
 
 const Home = () => {
+const [data, setData] = useState([]);
+const[isLoading, setIsLoading] = useState(true)
+
+useEffect(() => {
+   const fetchData = async () => {
+    setIsLoading(true);
+   try {
+     const response = await getAllPosts();
+      setData(response)
+    } catch(error) {
+       Alert.alert('Error', error.message)
+    } finally {
+      setIsLoading(false);
+    }
+   }
+
+   fetchData();
+}, [])
+
+
+console.log(data)
 const [refreshing, setRefreshing] = useState(false);
  
 const onRefresh = async() => {
   setRefreshing(true)
   // re call videos- see if any new video appears
+  setRefreshing(false)
 }
 
   return (
