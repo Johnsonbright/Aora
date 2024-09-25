@@ -10,6 +10,17 @@ export const appwriteConfig = {
   videoCollection: "66f261ec003430fe51cc",
   storageId: "66f264830035c186c55c"
 }
+// Destructuring config
+const {
+  endpoint,
+  platform,
+  projectId,
+  databaseId,
+  userCollectionId,
+  videoCollection,
+  storageId
+} = config
+
 
 // Init your React Native SDK
 const client = new Client();
@@ -82,6 +93,15 @@ export const getCurrentUser = async() => {
      if(!currentUser) throw Error;
      return currentUser.documents[0]
   } catch(error) {
+    console.log(error)
+  }
+}
+
+export const getAllPosts = async () => {
+  try {
+     const posts = await databases.listDocuments
+  }
+  catch(error) {
     console.log(error)
   }
 }
