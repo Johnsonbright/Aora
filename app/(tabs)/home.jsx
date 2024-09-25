@@ -3,33 +3,16 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../constants'
 import SearchInput from '../../components/SearchInput'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Trending from '../../components/Trending'
 import EmptyState from '../../components/EmptyState'
 import {getAllPosts} from "../../lib/appwrite"
+import useAppwrite from '../../lib/useAppwrite'
 
 const Home = () => {
-const [data, setData] = useState([]);
-const[isLoading, setIsLoading] = useState(true)
 
-useEffect(() => {
-   const fetchData = async () => {
-    setIsLoading(true);
-   try {
-     const response = await getAllPosts();
-      setData(response)
-    } catch(error) {
-       Alert.alert('Error', error.message)
-    } finally {
-      setIsLoading(false);
-    }
-   }
+  const {data: posts} = useAppwrite(getAllPosts);
 
-   fetchData();
-}, [])
-
-
-console.log(data)
 const [refreshing, setRefreshing] = useState(false);
  
 const onRefresh = async() => {
@@ -37,12 +20,12 @@ const onRefresh = async() => {
   // re call videos- see if any new video appears
   setRefreshing(false)
 }
-
+console.log(posts)
   return (
    <SafeAreaView className="bg-primary h-full" >
    <FlatList
-    // data={[{id: 1}, {id: 2}, {id: 1}]}
-    data={{}}
+    data={[{id: 1}, {id: 2}, {id: 1}]}
+    // data={{}}
     keyExtractor={(item) => item.$id}
     renderItem={({item}) => (
       <Text className="text-3xl text-white" >{item.id}</Text>
