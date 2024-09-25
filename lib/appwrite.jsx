@@ -7,7 +7,7 @@ export const appwriteConfig = {
   projectId: "66f25cea002ab41c6d11",
   databaseId: "66f25ff9003a6402e1d7",
   userCollectionId: "66f260af0019bfd6c99f",
-  videoCollection: "66f261ec003430fe51cc",
+  videoCollectionId: "66f261ec003430fe51cc",
   storageId: "66f264830035c186c55c"
 }
 // Destructuring config
@@ -17,7 +17,7 @@ const {
   projectId,
   databaseId,
   userCollectionId,
-  videoCollection,
+  videoCollectionId,
   storageId
 } = config
 
@@ -99,7 +99,11 @@ export const getCurrentUser = async() => {
 
 export const getAllPosts = async () => {
   try {
-     const posts = await databases.listDocuments
+     const posts = await databases.listDocuments(
+      databaseId,
+      videoCollectionId
+     )
+     return posts.documents;
   }
   catch(error) {
     console.log(error)
