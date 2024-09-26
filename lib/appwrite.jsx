@@ -45,6 +45,7 @@ export const createUser = async (email, password, username) => {
         password,
         username
     )
+   
     if(!newAccount) throw Errors;
     const avatarUrl = avatars.getInitials(username)
 
@@ -103,6 +104,22 @@ export const getAllPosts = async () => {
       databaseId,
       videoCollectionId
      )
+  
+     return posts.documents;
+  }
+  catch(error) {
+    console.log(error)
+  }
+}
+
+export const getLatestPosts = async () => {
+  try {
+     const posts = await databases.listDocuments(
+      databaseId,
+      videoCollectionId,
+      [Query.orderDesc("$createdAt", Query.limit(7))]
+     )
+     console.log("🚀 ~ getLatestPosts ~ posts:", posts)
      return posts.documents;
   }
   catch(error) {
