@@ -1,9 +1,10 @@
 import {useLocalSearchParams} from "expo-router"
-import { View, Text, FlatList, Image, RefreshControl, } from 'react-native'
+import { View, Text, FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import SearchInput from '../../components/SearchInput'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import EmptyState from '../../components/EmptyState'
+import {searchPosts} from "../../lib/appwrite"
 import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 
@@ -11,9 +12,7 @@ const Search = () => {
 const {query} = useLocalSearchParams()
 const {data: posts, refetch} = useAppwrite(() => searchPosts(query));
 
-console.log(query, posts)
 
-const [refreshing, setRefreshing] = useState(false);
  
 useEffect(()=> {
     refetch()
