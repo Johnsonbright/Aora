@@ -127,7 +127,7 @@ export const getLatestPosts = async () => {
   }
 }
 
-export const searchPosts = async () => {
+export const searchPosts = async (query) => {
   try {
      const posts = await databases.listDocuments(
       databaseId,
