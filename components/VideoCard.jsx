@@ -1,10 +1,13 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { icons } from '../constants'
+import { Video, ResizeMode } from 'expo-av'
 
 const VideoCard = ({video: {title, thumbnail, video, creator: {username, avatar}}}) => {
+ 
+  
    const [play, setPlay] = useState(false)
-
+    
   return (
     <View className="flex-col items-center px-4 mb-14">
       <View className="flex-row gap-3 items-start">
@@ -27,7 +30,21 @@ const VideoCard = ({video: {title, thumbnail, video, creator: {username, avatar}
         </View>
         </View>
           {play ? (
-            <Text className="text-white">Playing</Text>
+             <Video
+             source={{uri:"https://player.vimeo.com/video/949581999?h=4672125b31"}}
+          
+             className="w-52 h-72 rounded-[35px] mt-3 bg-white/10"
+             resizeMode={ResizeMode.CONTAIN}
+             useNativeControls
+             shouldPlay
+             onPlaybackStatusUpdate={(status) => {
+              console.log("🚀 ~ VideoCard ~ status:", status)
+              
+               if(status.didJustFinish) {
+                 setPlay(false);
+               }
+             }}
+            />
           ) : (
             <TouchableOpacity
             activeOpacity={0.7}

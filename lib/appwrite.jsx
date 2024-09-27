@@ -119,7 +119,7 @@ export const getLatestPosts = async () => {
       videoCollectionId,
       [Query.orderDesc("$createdAt", Query.limit(7))]
      )
-     console.log("🚀 ~ getLatestPosts ~ posts:", posts)
+ 
      return posts.documents;
   }
   catch(error) {
