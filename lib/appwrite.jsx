@@ -26,9 +26,9 @@ const {
 const client = new Client();
 
 client
-    .setEndpoint(appwriteConfig.endpoint) // Your Appwrite Endpoint
-    .setProject(appwriteConfig.projectId) // Your project ID
-    .setPlatform(appwriteConfig.platform) // Your application ID or bundle ID.
+    .setEndpoint(endpoint) // Your Appwrite Endpoint
+    .setProject(projectId) // Your project ID
+    .setPlatform(platform) // Your application ID or bundle ID.
 ;
 
 
@@ -51,8 +51,8 @@ export const createUser = async (email, password, username) => {
 
     await SignIn(email, password)
     const newUser = await databases.createDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.userCollectionId,
+      databaseId,
+      userCollectionId,
       ID.unique(),
       {
         accountid: newAccount.$id,
@@ -60,8 +60,7 @@ export const createUser = async (email, password, username) => {
         username,
         avatar: avatarUrl
       }
-
-    )
+    );
     return newUser;
   } catch(error) {
       console.log(error);
@@ -79,22 +78,36 @@ export const  SignIn = async (email, password) => {
   }
 }
 
+
+// Get Account
+export async function getAccount() {
+  try {
+    const currentAccount = await account.get();
+
+    return currentAccount;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+
 export const getCurrentUser = async() => {
   try {
-     const currentAccount = await account.get();
+     const currentAccount = await getAccount();
 
      if(!currentAccount) throw Error;
 
      const currentUser = await databases.listDocuments(
-      appwriteConfig.databaseId,
-      appwriteConfig.userCollectionId,
+      databaseId,
+      userCollectionId,
       [Query.equal('accountid', currentAccount.$id)]
      )
 
      if(!currentUser) throw Error;
      return currentUser.documents[0]
   } catch(error) {
-    console.log(error)
+    console.log(error);
+    return null;
   }
 }
 
@@ -103,7 +116,7 @@ export const getAllPosts = async () => {
      const posts = await databases.listDocuments(
       databaseId,
       videoCollectionId
-     )
+     );
   
      return posts.documents;
   }
@@ -117,7 +130,7 @@ export const getLatestPosts = async () => {
      const posts = await databases.listDocuments(
       databaseId,
       videoCollectionId,
-      [Query.orderDesc("$createdAt", Query.limit(7))]
+      [Query.orderDesc("$createdAt"), Query.limit(7)]
      )
  
      return posts.documents;
@@ -147,7 +160,7 @@ export const getUserPosts = async (userId) => {
      const posts = await databases.listDocuments(
       databaseId,
       videoCollectionId,
-      [Query.equal("creator", userId)]
+      [Query.equal('creator', userId)]
      )
  
      return posts.documents;
@@ -159,7 +172,7 @@ export const getUserPosts = async (userId) => {
 
 export async function signOut() {
   try {
-    const session = await account.deleteSession("current");
+    const session = await account.deleteSession('current');
 
     return session;
   } catch (error) {
