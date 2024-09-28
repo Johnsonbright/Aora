@@ -4,18 +4,24 @@ import React, { useEffect } from 'react'
 import EmptyState from '../../components/EmptyState'
 import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
-import { useGlobalContext } from "@/context/GlobalProvider"
-import { getUserPosts } from '@/lib/appwrite'
+import { useGlobalContext } from "../../context/GlobalProvider";
+import { getUserPosts, signOut } from "../../lib/appwrite";
 import { icons } from '@/constants'
 import InfoBox from '../../components/InfoBox'
 
 
 const Profile = () => {
 const {user, setUser, setIsLogged} = useGlobalContext()
-const {data: posts} = useAppwrite(() => getUserPosts(user.$id));
+const {data: posts} = useAppwrite(() => getUserPosts(user?.$id));
 
-const logout = () => {
 
+
+const logout = async () => {
+ await signOut();
+ setUser(null)
+ setIsLogged(false);
+
+ router.replace("/sign-in");
 }
  
   return (
