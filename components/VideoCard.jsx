@@ -31,7 +31,7 @@ const VideoCard = ({video: {title, thumbnail, video, creator: {username, avatar}
         </View>
           {play ? (
              <Video
-             source={{uri:"https://player.vimeo.com/video/949581999?h=4672125b31"}}
+             source={{uri: video}}
           
              className="w-52 h-72 rounded-[35px] mt-3 bg-white/10"
              resizeMode={ResizeMode.CONTAIN}
