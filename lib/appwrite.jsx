@@ -80,20 +80,20 @@ export const  SignIn = async (email, password) => {
 
 
 // Get Account
-export async function getAccount() {
-  try {
-    const currentAccount = await account.get();
+// export async function getAccount() {
+//   try {
+//     const currentAccount = await account.get();
 
-    return currentAccount;
-  } catch (error) {
-    throw new Error(error);
-  }
-}
+//     return currentAccount;
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// }
 
 
 export const getCurrentUser = async() => {
   try {
-     const currentAccount = await getAccount();
+     const currentAccount = await account.get();
 
      if(!currentAccount) throw Error;
 
