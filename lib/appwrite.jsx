@@ -1,4 +1,4 @@
-import { Account, Avatars, Client, Databases, ID , Query} from 'react-native-appwrite';
+import { Account, Avatars, Client, Databases, ID , Query, Storage} from 'react-native-appwrite';
 
 
 export const appwriteConfig = {
@@ -36,6 +36,7 @@ client
 const account = new Account(client);
 const avatars = new Avatars(client);
 const databases = new Databases(client);
+const storage = new Storage(client);
 
 export const createUser = async (email, password, username) => {
   try {
@@ -168,7 +169,7 @@ export const getUserPosts = async (userId) => {
   catch(error) {
     console.log(error)
   }
-}
+};
 
 export async function signOut() {
   try {
@@ -176,6 +177,58 @@ export async function signOut() {
 
     return session;
   } catch (error) {
+    throw new Error(error);
+  }
+};
+
+//3. type of file
+export const getFilePreview = async(fileId, type) => {
+  let fileurl;
+
+  try{
+    if(type === 'video') {
+      fileurl = storage.getFileView(storageId, field)
+    } else if (type === 'image') {
+      fileurl = storage.getFilePreview(storageId, fileId, 2000, 2000, 'top', 100)
+    } else {
+      throw new Error('Invalid file type')
+    }
+
+    if(!fileurl) throw Error;
+  } catch(error) {
+    throw new Error(error)
+  }
+}
+
+
+//2. upload file
+export const uploadFile = async (file, type) => {
+   if(!file) return;
+
+   const {mimeType, ...rest} = file;
+   const asset = {type: mimeType, ...rest};
+
+   try{
+     const uploadFile = await storage.createFile(
+      storageId,
+      ID.unique(),
+      asset
+     );
+
+     const fileUrl = await getFilePreview(uploadFile.$id, type)
+   }catch(error) {
+    throw new Error(error)
+   }
+}
+
+// 1. create video
+export const createVideo = async (form) => {
+  try{
+   const [thumbnailUrl, videoUrl] = await Promise.all([
+    uploadFile(form.thumbnail, 'image'),
+    uploadFile(form.video, 'video'),
+   ])
+  }catch(error) {
     throw new Error(error);
   }
 }

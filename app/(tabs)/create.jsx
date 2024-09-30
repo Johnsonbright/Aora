@@ -1,10 +1,12 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity, Image, Alert } from 'react-native'
 import React, {useState} from 'react'
 import {SafeAreaView} from "react-native-safe-area-context"
 import FormField from "../../components/FormField"
 import {Video , ResizeMode} from "expo-av"
 import { icons } from '../../constants'
 import CustomButton from "../../components/CustomButton"
+import * as DocumentPicker from "expo-document-picker"
+import {router} from 'expo-router'
 
 const create = () => {
 
@@ -17,11 +19,44 @@ const [uploading, setUploading] = useState(false)
  })
 
  const openPicker = async(selectType) => {
-    const result = await DocumentPicker
+    const result = await DocumentPicker.getDocumentAsync({
+      type: selectType === 'image' ? ['image/png', 'image/jpg']: ['video/mp4', 'video/gif']
+    })
+    if(!result.canceled) {
+      if(selectType=== 'image') {
+        setForm({...form, thumbnail: result.assets[0]});
+      }
+      if(selectType=== 'video') {
+        setForm({...form, video: result.assets[0]});
+      }
+    }
+    else {
+      setTimeout(() => {
+        Alert.alert('Document Picked', JSON.stringify(result, null, 2))
+      },100)
+    }
  };
 
  const submit = () => {
-
+     if(!form.prompt || !form.title || !form.thumbnail || !form.video) {
+      return Alert.alert("Please fill in all the fields")
+     }
+     setUploading(true)
+     try{
+        Alert.alert('Success', 'Post uploaded successfully')
+        router.push('/home')
+        
+     }catch(error) {
+       Alert.alert('Error', error.message)
+     }finally{
+      setForm({
+        title: " ",
+        video: null,
+        thumbnail: null,
+        prompt: " "
+      })
+     }
+     setUploading(false)
  };
 
   return (
