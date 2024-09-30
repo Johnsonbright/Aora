@@ -228,6 +228,19 @@ export const createVideo = async (form) => {
     uploadFile(form.thumbnail, 'image'),
     uploadFile(form.video, 'video'),
    ])
+
+   const newPost = await databases.createDocument(
+    databaseId,
+     videoCollectionId,
+      ID.unique(),
+    {
+      title: form.title,
+      thumbnail: thumbnailUrl,
+      video: videoUrl,
+      prompt: form.prompt,
+      creator: form.userId
+    } )
+    return newPost;
   }catch(error) {
     throw new Error(error);
   }
