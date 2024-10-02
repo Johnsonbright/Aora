@@ -68,7 +68,7 @@ const logout = async () => {
 
         <View className="mt-5 flex-row">
         <InfoBox
-         title={posts.length || 0}
+         title={posts?.length || 0}
          subtitle="Posts"
          containerStyles="mr-10"
          titleStyles="text-xl"
