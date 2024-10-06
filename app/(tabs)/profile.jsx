@@ -1,6 +1,6 @@
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import EmptyState from '../../components/EmptyState'
 import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
@@ -19,7 +19,13 @@ console.log("🚀 ~ Profile ~ getUserPosts(user?.$id):", getUserPosts(user?.$id)
 console.log("🚀 ~ Profile ~ posts:", posts)
 console.log("🚀 ~ Profile ~ user?.$id:", user?.$id)
 
+const[allPost, setAllPost] = useState([])
+useEffect(()=> {
+  if(posts.lenghth) {
+   setAllPost(posts)
+  }
 
+}, [posts])
 
 
 
@@ -68,7 +74,7 @@ const logout = async () => {
 
         <View className="mt-5 flex-row">
         <InfoBox
-         title={posts?.length || 0}
+         title={allPost}
          subtitle="Posts"
          containerStyles="mr-10"
          titleStyles="text-xl"
