@@ -70,7 +70,7 @@ export const createUser = async (email, password, username) => {
 }
 
 
-export const  SignIn = async (email, password) => {
+export const SignIn = async (email, password) => {
   try{
     const session = await account.createEmailPasswordSession(email, password)
     return session;
@@ -95,6 +95,7 @@ export const  SignIn = async (email, password) => {
 export const getCurrentUser = async() => {
   try {
      const currentAccount = await account.get();
+     console.log("🚀 ~ getCurrentUser ~ currentAccount:", currentAccount)
 
      if(!currentAccount) throw Error;
 
