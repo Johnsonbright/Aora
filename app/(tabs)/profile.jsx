@@ -13,19 +13,20 @@ import { router } from "expo-router";
 
 const Profile = () => {
 const {user, setUser} = useGlobalContext()
+const us = useGlobalContext()
 
 const {data: posts} = useAppwrite(() => getUserPosts(user?.$id));
-console.log("🚀 ~ Profile ~ getUserPosts(user?.$id):", getUserPosts(user?.$id))
-console.log("🚀 ~ Profile ~ posts:", posts)
-console.log("🚀 ~ Profile ~ user?.$id:", user?.$id)
+// console.log("🚀 ~ Profile ~ getUserPosts(user?.$id):", getUserPosts(user))
+console.log("🚀 ~ Profile ~ posts:", us)
+// console.log("🚀 ~ Profile ~ user?.$id:", user?.$id)
 
-const[allPost, setAllPost] = useState([])
-useEffect(()=> {
-  if(posts.lenghth) {
-   setAllPost(posts)
-  }
+// const[allPost, setAllPost] = useState([])
+// useEffect(()=> {
+//   if(posts?.length) {
+//    setAllPost(posts)
+//   }
 
-}, [posts])
+// }, [posts])
 
 
 
@@ -74,7 +75,7 @@ const logout = async () => {
 
         <View className="mt-5 flex-row">
         <InfoBox
-         title={allPost}
+         title={posts?.length || 0}
          subtitle="Posts"
          containerStyles="mr-10"
          titleStyles="text-xl"

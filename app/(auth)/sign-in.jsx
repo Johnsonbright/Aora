@@ -31,13 +31,20 @@ const [isSubmitting, setIsSubmitting] = useState(false)
       setIsSubmitting(true);
     
       try {
+        const resp = await SignIn(form.email, form.password)
+        console.log("🚀 ~ submit ~ resp:", resp)
       //  await SignIn (form.email, form.password)
-         const result = await getCurrentUser();
-        setUser(result);
-        setIsLoggedIn(true);
-         
-        Alert.alert("Success", "User signed in successfully")
-         router.replace('/home')
+        //  const result = await getCurrentUser();
+
+         if(resp){
+
+           console.log("🚀 ~ submit ~ result://///j", result)
+           setUser(resp);
+           setIsLoggedIn(true);
+           
+           Alert.alert("Success", "User signed in successfully")
+           router.replace('/home')
+          }
       } catch(error) {
         Alert.alert('Error', error.message)
       } finally{
