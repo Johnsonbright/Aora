@@ -12,14 +12,10 @@ import { useGlobalContext } from '../../context/GlobalProvider'
 const Signin = () => {
 
   const {setUser, setIsLoggedIn} = useGlobalContext();
-
-
-  
   const [form, setForm] = useState({
      email: '',
      password: ''
   })
-
 const [isSubmitting, setIsSubmitting] = useState(false)
 
 
@@ -33,13 +29,9 @@ const [isSubmitting, setIsSubmitting] = useState(false)
       try {
         const resp = await SignIn(form.email, form.password)
         console.log("🚀 ~ submit ~ resp:", resp)
-      //  await SignIn (form.email, form.password)
-        //  const result = await getCurrentUser();
-
+         const result = await getCurrentUser();
          if(resp){
-
-           console.log("🚀 ~ submit ~ result://///j", result)
-           setUser(resp);
+           setUser(result);
            setIsLoggedIn(true);
            
            Alert.alert("Success", "User signed in successfully")
