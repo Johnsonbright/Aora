@@ -12,7 +12,7 @@ import { router } from "expo-router";
 
 
 const Profile = () => {
-const {user, setUser} = useGlobalContext()
+const {user, setUser, setIsLoggedIn} = useGlobalContext()
 const us = useGlobalContext()
 
 const {data: posts} = useAppwrite(() => getUserPosts(user?.$id));
@@ -34,6 +34,7 @@ console.log("🚀 ~ Profile ~ posts:", us)
 const logout = async () => {
  await signOut();
  setUser(null)
+ setIsLoggedIn(false)
 
 
  router.replace("/sign-in");

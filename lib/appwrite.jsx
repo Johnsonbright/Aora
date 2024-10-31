@@ -175,7 +175,7 @@ export const getUserPosts = async (userId) => {
 
 export async function signOut() {
   try {
-    const session = await account.deleteSession('current');
+    const session = await account.deleteSession("current");
 
     return session;
   } catch (error) {
