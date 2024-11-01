@@ -8,7 +8,14 @@ const GlobalProvider = ({children}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+ const [bookMarkedVideo, setIsBookMarked] = useState([])
 
+ const addBookmark = (video) => {
+  setIsBookMarked((prev) => [...prev, video])
+ };
+ const removeBookmark = (videoId) => {
+  setIsBookMarked((prev) => prev.filter((video => video.id !== videoId)))
+ };
 
   useEffect(()=> {
     getCurrentUser().then((res) => {
@@ -34,7 +41,10 @@ const GlobalProvider = ({children}) => {
         setIsLoggedIn,
         user,
         setUser,
-        isLoading
+        isLoading,
+        bookMarkedVideo,
+        addBookmark,
+        removeBookmark,
        }}
     >
       {children}

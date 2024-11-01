@@ -11,6 +11,7 @@ import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 import {useGlobalContext} from "../../context/GlobalProvider"
 
+
 const Home = () => {
 
   const {user, setUser, setIsLoggedIn} = useGlobalContext()
