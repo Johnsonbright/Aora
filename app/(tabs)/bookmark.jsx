@@ -1,23 +1,26 @@
 import { View, Text, SafeAreaView, FlatList } from 'react-native'
 import React from 'react'
 import { useGlobalContext } from '@/context/GlobalProvider';
+import { useRoute } from '@react-navigation/native';
+import VideoCard from '../../components/VideoCard';
 
 
 
 
-const bookmark = ({route}) => {
-  const { bookMarkedVideo } = useGlobalContext();
-  const {video} = route.params;
+const bookmark = () => {
+  // const { bookMarkedVideo } = useGlobalContext();
+  const {params: video} = useRoute
   return (
     <SafeAreaView className="bg-primary h-full">
-      <Text className="text-white"> bookmark video</Text>
       <FlatList
        data = {video}
        keyExtractor={(item) => item.id}
        renderItem={({item}) => 
-        <Text> {item.title}</Text>
+         <VideoCard video={item}/>
       }
+       
       />
+      
     </SafeAreaView>
   )
 }
