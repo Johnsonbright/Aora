@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Image, RefreshControl, } from 'react-native'
+import { View, Text, FlatList, Image, RefreshControl, TouchableOpacity, } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../constants'
 import SearchInput from '../../components/SearchInput'
@@ -10,9 +10,12 @@ import {getAllPosts, getLatestPosts} from "../../lib/appwrite"
 import useAppwrite from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 import {useGlobalContext} from "../../context/GlobalProvider"
+import {Link} from "expo-router"
+import Listing from '../../components/Listing'
+// 
 
 
-const Home = () => {
+const Home = (props) => {
 
   const {user, setUser, setIsLoggedIn} = useGlobalContext()
   const {data: posts, refetch} = useAppwrite(getAllPosts);
@@ -32,12 +35,14 @@ const onRefresh = async() => {
    <SafeAreaView className="bg-primary h-full" >
    <FlatList
     data={posts}
-    keyExtractor={(item) => item.$id}
+    keyExtractor={(_, index) => `item ${index}`}
     renderItem={({item}) => (
-      <VideoCard 
-      video={item}
       
+        <VideoCard 
+      video={item}
       />
+    
+     
     )}
      ListHeaderComponent={()=> (
       <View className="my-6 px-4 space-y-6"  >

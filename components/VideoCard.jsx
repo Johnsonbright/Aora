@@ -7,10 +7,11 @@ import { Alert } from 'react-native';
 import * as Notifications from 'expo-notifications'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import {useNavigation} from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-const VideoCard = ({video: {title, thumbnail, video, creator: {username, avatar}}}) => {
+const VideoCard = (video) => {
  
   const navigation = useNavigation();
   const {bookMarkedVideo, addBookmark, removeBookmark} = useGlobalContext();
@@ -28,8 +29,26 @@ const VideoCard = ({video: {title, thumbnail, video, creator: {username, avatar}
   //  }
 
    const toggleBookmark = () => {
-     navigation.navigate('bookmark', {video})
+    //  navigation.navigate('bookmark', {video})
    }
+
+   const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('my-fav', jsonValue);
+      
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  const removeData = async (key) => {
+    try {
+      const jsonValue = await AsyncStorage.removeItem(key);
+    } catch (e) {
+      // error reading value
+    }
+  };
     
   //  const handleLikeClick = async(type) => {
   //   const message = type === 'like' ? 'Video bookmarked as favorite' : '';
@@ -46,18 +65,19 @@ const VideoCard = ({video: {title, thumbnail, video, creator: {username, avatar}
 
 
   //  }
-    const handleLikeClick = async() => {
+    const handleLikeClick = async(item) => {
+    await storeData(item)
     const message =  'Video bookmarked as favorite' 
     // show alert
-    Alert.alert('Notification', message);
+    // Alert.alert('Notification', message);
      
-    await Notifications.scheduleNotificationAsync({
-       content: {
-         title: "Notification",
-         body: message
-       },
-        trigger: null, // Trigger immediately
-    })
+    // await Notifications.scheduleNotificationAsync({
+    //    content: {
+    //      title: "Notification",
+    //      body: message
+    //    },
+    //     trigger: null, // Trigger immediately
+    // })
    }
    
   return (
@@ -66,15 +86,15 @@ const VideoCard = ({video: {title, thumbnail, video, creator: {username, avatar}
         <View className="justify-center items-center flex-row flex-1" >
          <View className="w-[46px] h-[46px] rounded-lg border border-secondary justify-center items-center p-0.5">
            <Image
-           source={{uri: avatar}}
+           source={{uri: video?.video?.avatar}}
            className="w-full h-full rounded-lg"
            resizeMode='cover'
            />
          </View>
 
          <View className="justify-center flex-1 ml-3 gap-y-1">
-            <Text className="text-white font-psemibold text-sm" numberOfLines={1}>{title}</Text>
-            <Text className="text-xs text-gray-100 font-pregular" numberOfLines={1} >{username}</Text>
+            <Text className="text-white font-psemibold text-sm" numberOfLines={1}>{video?.video?.title}</Text>
+            <Text className="text-xs text-gray-100 font-pregular" numberOfLines={1} >{video?.video?.creator?.username}</Text>
            </View>
         </View>
         <View className="pt-2">
@@ -84,7 +104,7 @@ const VideoCard = ({video: {title, thumbnail, video, creator: {username, avatar}
           {play ? (
 
              <Video
-             source={{uri: video}}
+             source={{uri: video?.video?.video}}
           
              className="w-52 h-72 rounded-[35px] mt-3 bg-white/10"
              resizeMode={ResizeMode.CONTAIN}
@@ -109,8 +129,9 @@ const VideoCard = ({video: {title, thumbnail, video, creator: {username, avatar}
              <TouchableOpacity
               onPress={() => {
                 if (!isFavorite){
-                  handleLikeClick()
-                  toggleBookmark()
+                  handleLikeClick(video)
+                }else{
+                  removeData('my-fav')
                 }
                 setIsFavorite(!isFavorite);
               }
@@ -120,7 +141,7 @@ const VideoCard = ({video: {title, thumbnail, video, creator: {username, avatar}
              </TouchableOpacity>
                 
                 <Image
-                source={{uri:thumbnail}}
+                source={{uri:video?.video?.thumbnail}}
                 className="w-full h-full rounded-xl mt-3"
                  resizeMode='cover'
                 />
