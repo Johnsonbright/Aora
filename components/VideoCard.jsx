@@ -35,7 +35,7 @@ const VideoCard = (video) => {
    const storeData = async (value) => {
     try {
       const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem('my-fav', jsonValue);
+      await AsyncStorage.setItem('fav', jsonValue);
       
     } catch (e) {
       // saving error

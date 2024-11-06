@@ -26,7 +26,7 @@ const bookmark = ({navigation}) => {
       // error reading value
     }
   };
-  const rmoveData = async (key) => {
+  const removeData = async (key) => {
     try {
       const jsonValue = await AsyncStorage.removeItem(key);
     } catch (e) {
@@ -36,7 +36,7 @@ const bookmark = ({navigation}) => {
 
   useEffect(()=> {
     async function favs() {
-      const resp = await getData('my-fav')
+      const resp = await getData('fav')
       console.log("🚀 ~ favs ~ resp//////:  ", resp)
       setVideo(resp)
     }
