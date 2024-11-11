@@ -15,7 +15,7 @@ import Listing from '../../components/Listing'
 // 
 
 
-const Home = (props) => {
+const Home = () => {
 
   const {user, setUser, setIsLoggedIn} = useGlobalContext()
   const {data: posts, refetch} = useAppwrite(getAllPosts);

@@ -45,6 +45,7 @@ const VideoCard = (video) => {
   const removeData = async (key) => {
     try {
       const jsonValue = await AsyncStorage.removeItem(key);
+      return jsonValue
     } catch (e) {
       // error reading value
     }
@@ -131,10 +132,10 @@ const VideoCard = (video) => {
                 if (!isFavorite){
                   handleLikeClick(video)
                 }else{
-                  removeData('my-fav')
+                  removeData('fav')
                 }
                 setIsFavorite(!isFavorite);
-              }
+              }  
                }
              >
              <AntDesign name='heart' size={24} color={isFavorite? 'red': 'white'}/>
