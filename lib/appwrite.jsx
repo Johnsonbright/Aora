@@ -95,7 +95,7 @@ export const SignIn = async (email, password) => {
 export const getCurrentUser = async() => {
   try {
      const currentAccount = await account.get();
-     console.log("🚀 ~ getCurrentUser ~ currentAccount:", currentAccount)
+    //  console.log("🚀 ~ getCurrentUser ~ currentAccount:", currentAccount)
 
      if(!currentAccount) throw Error;
 

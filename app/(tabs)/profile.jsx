@@ -13,11 +13,11 @@ import { router } from "expo-router";
 
 const Profile = () => {
 const {user, setUser, setIsLoggedIn} = useGlobalContext()
-const us = useGlobalContext()
+
 
 const {data: posts} = useAppwrite(() => getUserPosts(user?.$id));
 // console.log("🚀 ~ Profile ~ getUserPosts(user?.$id):", getUserPosts(user))
-console.log("🚀 ~ Profile ~ posts:", us)
+
 // console.log("🚀 ~ Profile ~ user?.$id:", user?.$id)
 
 // const[allPost, setAllPost] = useState([])

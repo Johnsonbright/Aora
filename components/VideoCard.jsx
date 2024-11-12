@@ -42,14 +42,14 @@ const VideoCard = (video) => {
     }
   };
 
-  const removeData = async (key) => {
-    try {
-      const jsonValue = await AsyncStorage.removeItem(key);
-      return jsonValue
-    } catch (e) {
-      // error reading value
-    }
-  };
+  // const removeData = async (key) => {
+  //   try {
+  //     const jsonValue = await AsyncStorage.removeItem(key);
+  //     return jsonValue
+  //   } catch (e) {
+  //     // error reading value
+  //   }
+  // };
     
   //  const handleLikeClick = async(type) => {
   //   const message = type === 'like' ? 'Video bookmarked as favorite' : '';
