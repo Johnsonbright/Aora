@@ -10,16 +10,16 @@ const GlobalProvider = ({children}) => {
   const [isLoading, setIsLoading] = useState(true)
  const [bookMarkedVideo, setIsBookMarked] = useState([])
 
- const addBookmark = (video) => {
-  setIsBookMarked((prev) => [...prev, video])
- };
- const removeBookmark = (videoId) => {
-  setIsBookMarked((prev) => prev.filter((video => video.id !== videoId)))
- };
+//  const addBookmark = (video) => {
+//   setIsBookMarked((prev) => [...prev, video])
+//  };
+//  const removeBookmark = (videoId) => {
+//   setIsBookMarked((prev) => prev.filter((video => video.id !== videoId)))
+//  };
 
   useEffect(()=> {
     getCurrentUser().then((res) => {
-      console.log("🚀 ~ getCurrentUser ~ res:", res)
+      // console.log("🚀 ~ getCurrentUser ~ res:", res)
       if(res) {
         setIsLoggedIn(true)
         setUser(res)
@@ -41,10 +41,7 @@ const GlobalProvider = ({children}) => {
         setIsLoggedIn,
         user,
         setUser,
-        isLoading,
-        bookMarkedVideo,
-        addBookmark,
-        removeBookmark,
+        isLoading
        }}
     >
       {children}

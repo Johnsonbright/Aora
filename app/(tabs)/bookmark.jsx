@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, FlatList, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView, FlatList} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useGlobalContext } from '@/context/GlobalProvider';
 import { useRoute } from '@react-navigation/native';
@@ -16,7 +16,7 @@ const bookmark = () => {
   // const { bookMarkedVideo } = useGlobalContext();
   // const {params: video} = useRoute()
 
-  const [video, setVideo] = useState({})
+  const [video, setVideo] = useState([])
   // console.log("🚀 ~ bookmark ~ video:", video)
   // const allFav = []
 
@@ -37,14 +37,27 @@ const bookmark = () => {
       console.log("Remove Err", err.message)
     }
   };
+  getAllKeys = async () => {
+    let keys = []
+    try {
+      keys = await AsyncStorage.getAllKeys()
+    } catch(e) {
+      // read key error
+    }
+  
+    console.log(keys)
+    // example console.log result:
+    // ['@MyApp_user', '@MyApp_key']
+  }
 
   useEffect(()=> {
     async function favs() {
       const resp = await getData('fav')
-      console.log("🚀 ~ favs ~ resp//////:  ", resp)
-      setVideo(resp)
+      console.log("🚀 ~ favs ~ resp//////:  ", resp?.video)
+      setVideo(resp?.video)
     }
-    favs()
+    favs();
+    getAllKeys();
   }, [])
 
 
@@ -52,16 +65,16 @@ const bookmark = () => {
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
-       data = {[video]}
-       keyExtractor={(item) => item.creator.$id}
+       data = {video}
+       keyExtractor={(item) => item?.creator?.$id}
        renderItem={({item}) => 
-         <VideoCard video={item }/>
+         <VideoCard video={item}/>
       }
       listHeaderComponent={()=> (
         <View className="my-6 px-4 space-y-6">
           <View>
-             <Text className="font-pmedium text-sm text-gray text-white">
-                 My Bookmark
+             <Text >
+                 My Bookmark 
              </Text>
           </View>
         </View>

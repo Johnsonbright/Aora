@@ -28,7 +28,7 @@ const [isSubmitting, setIsSubmitting] = useState(false)
     
       try {
         const resp = await SignIn(form.email, form.password)
-        console.log("🚀 ~ submit ~ resp:", resp)
+        // console.log("🚀 ~ submit ~ resp:", resp)
          const result = await getCurrentUser();
          if(resp){
            setUser(result);
