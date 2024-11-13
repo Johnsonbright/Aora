@@ -12,9 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const VideoCard = (video) => {
- 
   const navigation = useNavigation();
-  const {bookMarkedVideo, addBookmark, removeBookmark} = useGlobalContext();
    const [play, setPlay] = useState(false)
    const [isFavorite, setIsFavorite] = useState(false)
   
@@ -28,28 +26,10 @@ const VideoCard = (video) => {
   //   }
   //  }
 
-   const toggleBookmark = () => {
-    //  navigation.navigate('bookmark', {video})
-   }
+ 
+   
 
-   const storeData = async (value) => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem('fav', jsonValue);
-      
-    } catch (e) {
-      // saving error
-    }
-  };
 
-  // const removeData = async (key) => {
-  //   try {
-  //     const jsonValue = await AsyncStorage.removeItem(key);
-  //     return jsonValue
-  //   } catch (e) {
-  //     // error reading value
-  //   }
-  // };
     
   //  const handleLikeClick = async(type) => {
   //   const message = type === 'like' ? 'Video bookmarked as favorite' : '';
@@ -66,9 +46,31 @@ const VideoCard = (video) => {
 
 
   //  }
+
+  const addBookmark = async (videoId) => {
+    try {
+      // Get current bookmarks
+      const existingBookmarks = await AsyncStorage.getItem('bookmarkedVideos');
+      const bookmarks = existingBookmarks ? JSON.parse(existingBookmarks) : [];
+  
+      // Check if video is already bookmarked
+      if (!bookmarks.includes(videoId)) {
+        // Add the new bookmark
+        bookmarks.push(videoId);
+        await AsyncStorage.setItem('bookmarkedVideos', JSON.stringify(bookmarks));
+        console.log('Video bookmarked successfully!');
+      } else {
+        console.log('Video is already bookmarked.');
+      }
+    } catch (error) {
+      console.error('Error saving bookmark', error);
+    }
+  };
+   
+
     const handleLikeClick = async(item) => {
-    await storeData(item)
     const message =  'Video bookmarked as favorite' 
+  
     // show alert
     // Alert.alert('Notification', message);
      

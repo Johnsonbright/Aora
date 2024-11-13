@@ -16,48 +16,25 @@ const bookmark = () => {
   // const { bookMarkedVideo } = useGlobalContext();
   // const {params: video} = useRoute()
 
-  const [video, setVideo] = useState([])
+  const [video, setVideo] = useState()
   // console.log("🚀 ~ bookmark ~ video:", video)
   // const allFav = []
 
 
-  const getData = async (key) => {
-    try {
-      const jsonValue = await AsyncStorage.getItem(key);
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
-      // error reading value
-    }
-  };
-  const removeData = async (key) => {
-    try {
-      const jsonValue = await AsyncStorage.removeItem(key);
-    } catch (err) {
-      // error reading value
-      console.log("Remove Err", err.message)
-    }
-  };
-  getAllKeys = async () => {
-    let keys = []
-    try {
-      keys = await AsyncStorage.getAllKeys()
-    } catch(e) {
-      // read key error
-    }
+
+ 
   
-    console.log(keys)
-    // example console.log result:
-    // ['@MyApp_user', '@MyApp_key']
-  }
+
 
   useEffect(()=> {
-    async function favs() {
-      const resp = await getData('fav')
-      console.log("🚀 ~ favs ~ resp//////:  ", resp?.video)
-      setVideo(resp?.video)
-    }
-    favs();
-    getAllKeys();
+    // async function favs() {
+    //   const resp = await getData('fav')
+    //   console.log("🚀 ~ favs ~ resp//////:  ", resp?.video)
+    //   setVideo(resp?.video)
+    // }
+   
+ 
+    
   }, [])
 
 
