@@ -1,41 +1,48 @@
 import { View, Text, SafeAreaView, FlatList} from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useGlobalContext } from '@/context/GlobalProvider';
-import { useRoute } from '@react-navigation/native';
 import VideoCard from '../../components/VideoCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import useAppwrite from '../../lib/useAppwrite';
-import { getAllPosts } from '../../lib/appwrite';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 
 
 
 const bookmark = () => {
-  const {data: posts, refetch} = useAppwrite(getAllPosts);
-  // const { bookMarkedVideo } = useGlobalContext();
-  // const {params: video} = useRoute()
-
-  const [video, setVideo] = useState()
-  // console.log("🚀 ~ bookmark ~ video:", video)
-  // const allFav = []
-
-
-
  
+  const [bookmarkedVideos, setBookmarkedVideos] = useState([]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchBookmarks = async () => {
+        try {
+          const bookmarkedVideoIds = await getBookmarks();
+          setBookmarkedVideos(bookmarkedVideoIds);
+        } catch (error) {
+          console.error('Error fetching bookmarks:', error);
+        }
+      };
+      fetchBookmarks();
+    }, [])
+  );
+
+  const getBookmarks = async () => {
+    try {
+      const bookmarks = await AsyncStorage.getItem('bookmarkedVideos');
+      return bookmarks ? JSON.parse(bookmarks) : [];
+    } catch (error) {
+      console.error('Error retrieving bookmarks', error);
+      return [];
+    }
+  };
+  
+  const isBookmarked = async (videoId) => {
+    const bookmarks = await getBookmarks();
+    return bookmarks.includes(videoId);
+  };
   
 
 
-  useEffect(()=> {
-    // async function favs() {
-    //   const resp = await getData('fav')
-    //   console.log("🚀 ~ favs ~ resp//////:  ", resp?.video)
-    //   setVideo(resp?.video)
-    // }
-   
- 
-    
-  }, [])
 
 
 

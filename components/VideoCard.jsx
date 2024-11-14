@@ -67,10 +67,24 @@ const VideoCard = (video) => {
     }
   };
    
+  const getBookmarks = async () => {
+    try {
+      const bookmarks = await AsyncStorage.getItem('bookmarkedVideos');
+      return bookmarks ? JSON.parse(bookmarks) : [];
+    } catch (error) {
+      console.error('Error retrieving bookmarks', error);
+      return [];
+    }
+  };
+  const isBookmarked = async (videoId) => {
+    const bookmarks = await getBookmarks();
+    return bookmarks.includes(videoId);
+  };
+  
 
     const handleLikeClick = async(item) => {
     const message =  'Video bookmarked as favorite' 
-  
+     await addBookmark(item?.video?.creator?.$id)
     // show alert
     // Alert.alert('Notification', message);
      
@@ -133,8 +147,6 @@ const VideoCard = (video) => {
               onPress={() => {
                 if (!isFavorite){
                   handleLikeClick(video)
-                }else{
-                  removeData('fav')
                 }
                 setIsFavorite(!isFavorite);
               }  
