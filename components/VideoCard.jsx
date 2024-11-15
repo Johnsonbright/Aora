@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { icons } from '../constants'
 import { Video, ResizeMode } from 'expo-av'
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -15,6 +15,7 @@ const VideoCard = (video) => {
   const navigation = useNavigation();
    const [play, setPlay] = useState(false)
    const [isFavorite, setIsFavorite] = useState(false)
+   const [bookmarked, setBookmarked] = useState(false);
   
   //  const isBookmarked = bookMarkedVideo.some(() => video);
 
@@ -46,6 +47,14 @@ const VideoCard = (video) => {
 
 
   //  }
+ useEffect(()=> {
+     // Check if video is bookmarked on component mount
+     const checkBookmark = async (videoId) => {
+      const isBookmarkedVideo = await isBookmarked(videoId);
+      setBookmarked(isBookmarkedVideo);
+    };
+    checkBookmark();
+ }, [])
 
   const addBookmark = async (videoId) => {
     try {
@@ -66,6 +75,17 @@ const VideoCard = (video) => {
       console.error('Error saving bookmark', error);
     }
   };
+  const removeBookmark = async (videoId) => {
+  try {
+    const existingBookmarks = await AsyncStorage.getItem('bookmarkedVideos');
+    const bookmarks = existingBookmarks ? JSON.parse(existingBookmarks) : [];
+    const newBookmarks = bookmarks.filter(id => id !== videoId);
+    await AsyncStorage.setItem('bookmarkedVideos', JSON.stringify(newBookmarks));
+    console.log('Video removed from bookmarks.');
+  } catch (error) {
+    console.error('Error removing bookmark', error);
+  }
+};
    
   const getBookmarks = async () => {
     try {
@@ -83,8 +103,21 @@ const VideoCard = (video) => {
   
 
     const handleLikeClick = async(item) => {
+    console.log("🚀 ~ handleLikeClick ~ item:", item)
     const message =  'Video bookmarked as favorite' 
-     await addBookmark(item?.video?.creator?.$id)
+    const handleBookmark = async () => {
+      if (bookmarked) {
+        await removeBookmark(item?.video?.creator?.$id);
+      } else {
+        await addBookmark(item?.video?.creator?.$id);
+      }
+      setBookmarked(!bookmarked);
+    };
+    return handleBookmark()
+    // bookmarked?  await removeBookmark(item?.video?.creator?.$id):  await addBookmark(item?.video?.creator?.$id)
+    // setBookmarked(!bookmarked);
+    
+     
     // show alert
     // Alert.alert('Notification', message);
      
