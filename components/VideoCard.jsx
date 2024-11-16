@@ -58,9 +58,11 @@ const VideoCard = (video) => {
 
   const addBookmark = async (videoId) => {
     try {
+      let bookmarks = []
       // Get current bookmarks
       const existingBookmarks = await AsyncStorage.getItem('bookmarkedVideos');
-      const bookmarks = existingBookmarks ? JSON.parse(existingBookmarks) : [];
+      bookmarks = existingBookmarks ? JSON.parse(existingBookmarks) : [];
+  
   
       // Check if video is already bookmarked
       if (!bookmarks.includes(videoId)) {
@@ -107,9 +109,9 @@ const VideoCard = (video) => {
     const message =  'Video bookmarked as favorite' 
     const handleBookmark = async () => {
       if (bookmarked) {
-        await removeBookmark(item?.video?.creator?.$id);
+        await removeBookmark(item?.video?.$id);
       } else {
-        await addBookmark(item?.video?.creator?.$id);
+        await addBookmark(item?.video?.$id);
       }
       setBookmarked(!bookmarked);
     };
