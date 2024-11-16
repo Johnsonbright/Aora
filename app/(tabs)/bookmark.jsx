@@ -36,10 +36,10 @@ const bookmark = () => {
     }
   };
   
-  const isBookmarked = async (videoId) => {
-    const bookmarks = await getBookmarks();
-    return bookmarks.includes(videoId);
-  };
+  // const isBookmarked = async (videoId) => {
+  //   const bookmarks = await getBookmarks();
+  //   return bookmarks.includes(videoId);
+  // };
   
 
 
@@ -48,24 +48,21 @@ const bookmark = () => {
 
   return (
     <SafeAreaView className="bg-primary h-full">
-      <FlatList
-       data = {video}
-       keyExtractor={(item) => item?.creator?.$id}
+     <Text className="font-pmedium text-large text-gray text-white">  Bookmarked Video
+     </Text>
+      {bookmarkedVideos.length > 0 ? (
+        <FlatList
+       data = {bookmarkedVideos}
+       keyExtractor={(item) => item.toString()}
        renderItem={({item}) => 
          <VideoCard video={item}/>
       }
-      listHeaderComponent={()=> (
-        <View className="my-6 px-4 space-y-6">
-          <View>
-             <Text >
-                 My Bookmark 
-             </Text>
-          </View>
-        </View>
-      )}
-     
-      />
+      />): 
+      <Text className="font-pmedium text-sm text-gray text-white">
+         No Video BookMarked 
+      </Text>
       
+    }
     </SafeAreaView>
   )
 }
