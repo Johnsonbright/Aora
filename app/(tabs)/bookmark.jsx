@@ -48,7 +48,7 @@ const bookmark = () => {
 
   return (
     <SafeAreaView className="bg-primary h-full">
-     <Text className="font-pmedium text-large text-gray text-white">  Bookmarked Video
+     <Text className="font-pmedium text-large text-gray text-white">  Bookmarked Videos
      </Text>
       {bookmarkedVideos.length > 0 ? (
         <FlatList
