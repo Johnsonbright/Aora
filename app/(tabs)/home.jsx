@@ -75,7 +75,7 @@ const onRefresh = async() => {
      ListEmptyComponent={() => (
        <EmptyState 
        title="No Videos Found"
-       subtitle="Be the first one to upload a video"
+       subtitle="Be the first one to upload a video 🎉"
        />
      )}
      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
